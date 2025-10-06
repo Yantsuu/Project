@@ -110,12 +110,21 @@ function rerenderContent(activeHabbit) {
 }
 
 function rerender(activeHabbitId) {
-    globalActiveHabbitId = activeHabbitId
-    const activeHabbit = habbits.find(habbit => habbit.id === activeHabbitId);
-    if (!activeHabbit) {
+    if (!habbits.length) {
+        document.location.hash = '';
+        page.menu.innerHTML = '';
+        page.header.h1.innerText = 'Виберіть звичку';
+        page.header.progressPercent.innerText = '0%';
+        page.header.progressCoverBar.style.width = '0%';
+        page.content.daysConteiner.innerHTML = '';
+        page.content.nextDay.innerHTML = 'День _';
         return;
     }
-    document.location.replace(document.location.pathname + '#' + activeHabbitId);
+
+    const activeHabbit = habbits.find(h => h.id === activeHabbitId) || habbits[0];
+    globalActiveHabbitId = activeHabbit.id;
+    document.location.hash = `#${globalActiveHabbitId}`;
+    
     rerenderMenu(activeHabbit);
     rerenderHead(activeHabbit);
     rerenderContent(activeHabbit);
@@ -226,30 +235,33 @@ if (!name || !target) {
 }
 
 function deleteHabbit(habbitId) {
- habbits = habbits.filter(habbit => habbit.id !== habbitId);
- saveData();
-    
-  if (habbits.length > 0) {
+    habbits = habbits.filter(habbit => habbit.id !== habbitId);
+    saveData();
+
+    if (habbits.length > 0) {
         rerender(habbits[0].id);
     } else {
-        page.menu.innerHTML = '';
-        page.header.h1.innerText = '';
-        page.header.progressPercent.innerText = '';
-        page.header.progressCoverBar.style.width = '0%';
-        page.content.daysConteiner.innerHTML = '';
+        rerender(); 
     }
 }
-
 
 /* init */
 
 (() => {
-  loadData();
-  const hashId = Number(document.location.hash.replace('#', ''));
-  const urlHabbit = habbits.find(habbit => habbit.id == hashId);
-  if (urlHabbit) {
-    rerender(urlHabbit.id);
-  } else {
-     rerender(habbits[0].id);
-  }
+    loadData();
+    const hashId = Number(document.location.hash.replace('#', ''));
+
+    if (!habbits.length) {
+        rerender();
+        return;
+    }
+
+    const urlHabbit = habbits.find(habbit => habbit.id === hashId);
+
+    if (urlHabbit) {
+        rerender(urlHabbit.id);
+    } else {
+        rerender(habbits[0].id);
+    }
 })();
+
