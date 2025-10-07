@@ -101,7 +101,7 @@ function rerenderContent(activeHabbit) {
         element.innerHTML = `<div class="habbit__day">День ${Number(index) + 1}</div>
                         <div class="habbit__comment">${activeHabbit.days[index].comment}</div>
                         <button class="habbit__delete">
-                            <img src="./images/Delete.svg" alt="Видалити день ${index + 1}">
+                            <img src="images/delete.svg" alt="Видалити день ${index + 1}">
                         </button>`;
         element.querySelector('.habbit__delete').addEventListener('click', () => deleteDay(index));
         page.content.daysConteiner.appendChild(element);
