@@ -68,7 +68,7 @@ function rerenderMenu(activeHabbit) {
     for (const habbit of habbits) {
         const btn = document.createElement('button');
         btn.classList.add('menu__item');
-        btn.innerHTML = `<img src="./images/${habbit.icon}.svg" alt="${habbit.name}">`;
+        btn.innerHTML = `<img src="images/${habbit.icon}.svg" alt="${habbit.name}">`;
         if (activeHabbit.id === habbit.id) btn.classList.add('menu__item_active');
         btn.addEventListener('click', () => rerender(habbit.id));
 
